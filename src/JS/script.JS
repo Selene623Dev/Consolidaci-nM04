@@ -1,104 +1,85 @@
+const baseUrl = "https://swapi.tech/api/people/";
 
-import {
-    urlBase,
-    template,
-    sections,
-    animationFrames,
-    ready,
-} from "./src/JS/data.JS";
+// Función para obtener personajes únicos de la API
+async function fetchCharacter(id) {
+  try {
+    const response = await fetch(`${baseUrl}${id}`);
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+    const { result } = await response.json();
+    return result.properties;
+  } catch (error) {
+    console.error(`Error al obtener el personaje ${id}:`, error);
+    return null;
+  }
+}
 
-/* --- Función principal para mostrar un personaje --- */
-const show1Character = async (e) => {
-    const mainCard = e.target; // Tarjeta principal que activa la interacción
-    const groupName = mainCard.parentNode.parentNode.id; // ID del grupo de personajes
-    const section = sections[groupName]; // Sección correspondiente al grupo
-    const count = section.counter.next(); // Obtener el siguiente ID del personaje
+// Crear una tarjeta de personaje
+function createCharacterCard(character) {
+  const card = document.createElement("div");
+  card.classList.add("card");
+  card.innerHTML = `
+    <h3>${character.name || "Desconocido"}</h3>
+    <p>Estatura: ${character.height || "N/A"} cm</p>
+    <p>Peso: ${character.mass || "N/A"} kg</p>
+    <small>Género: ${character.gender || "N/A"}</small>
+  `;
+  return card;
+}
 
-    // Detener si se completó el conteo
-    if (count.done) return;
+// Generar las tarjetas para los personajes
+async function generateCardsForRange(start, end) {
+  const cardsContainer = document.querySelector(".cards");
+  cardsContainer.innerHTML = "<h2>Cargando personajes...</h2>";
 
-    // Cambiar el estado de la tarjeta a "cargando"
-    mainCard.querySelector(".circle-inside").classList.add("loading");
+  const characterPromises = [];
+  for (let id = start; id <= end; id++) {
+    characterPromises.push(fetchCharacter(id));
+  }
 
-    // Obtener el ID del personaje y los datos asociados
-    const characterId = count.value;
-    const characterJsonFormat = await get1Character(characterId);
+  // Esperar a que se completen todas las solicitudes
+  const characters = (await Promise.all(characterPromises)).filter(Boolean);
 
-    // Crear la tarjeta del personaje
-    const card = createElementCard(characterJsonFormat);
-    const row = e.target.parentNode;
+  // Limpiar contenedor y mostrar tarjetas
+  cardsContainer.innerHTML = "";
+  if (characters.length) {
+    characters.forEach((character) => {
+      const card = createCharacterCard(character);
+      cardsContainer.appendChild(card);
+    });
+  } else {
+    cardsContainer.innerHTML = "<h2>No se encontraron personajes en este rango.</h2>";
+  }
+}
 
-    // Restaurar el estado original de la tarjeta principal
-    mainCard.querySelector(".circle-inside").classList.remove("loading");
+// Manejar clic en los rangos
+function setupRangeListeners() {
+  document.querySelectorAll(".range").forEach((rangeElement) => {
+    rangeElement.addEventListener("click", async (e) => {
+      const [start, end] = e.currentTarget.dataset.range.split("-").map(Number);
+      const charactersContainer = document.querySelector(".characters");
 
-    // Añadir la tarjeta al DOM y animarla
-    const newCard = card.children[0];
-    row.append(card);
-    newCard.animate(animationFrames, { duration: 200 });
+      charactersContainer.innerHTML = "<h2>Cargando personajes...</h2>";
 
-    // Actualizar el estado de la tarjeta principal si se completaron todos los personajes
-    if (count.value === section.lastId) {
-        mainCard.querySelector(".circle-inside").textContent = "✓";
-        mainCard.querySelector("h2").textContent = "Todos...";
-        mainCard.querySelector("p").textContent =
-            "los personajes de esta sección ya han sido desplegados.";
-    }
-};
+      // Obtener personajes dentro del rango
+      const characters = [];
+      for (let id = start; id <= end; id++) {
+        const character = await fetchCharacter(id);
+        if (character) characters.push(character);
+      }
 
-/* --- Obtener los datos de un personaje desde la API --- */
-const get1Character = async (characterId) => {
-    let characterJsonFormat = null;
+      // Mostrar personajes
+      charactersContainer.innerHTML = "";
+      if (characters.length) {
+        characters.forEach((character) => {
+          const card = createCharacterCard(character);
+          charactersContainer.appendChild(card);
+        });
+      } else {
+        charactersContainer.innerHTML = "<h2>No se encontraron personajes.</h2>";
+      }
+    });
+  });
+}
 
-    try {
-        const answer = await fetch(`${urlBase}${characterId}`);
-        checkIfFetchAnswerIsOk(answer);
-        characterJsonFormat = await answer.json(); // Convertir la respuesta a JSON
-    } catch (error) {
-        console.error(`Error al obtener el personaje: ${error}`);
-    } finally {
-        return characterJsonFormat;
-    }
-};
-
-/* --- Verificar si la respuesta de la API es válida --- */
-const checkIfFetchAnswerIsOk = (answer) => {
-    if (!answer?.ok) {
-        throw new Error(
-            `Error al consultar el ID ${characterId}: estado ${answer.status}`
-        );
-    }
-};
-
-/* --- Crear un elemento de tarjeta con los datos del personaje --- */
-const createElementCard = (characterJsonFormat) => {
-    const clone = template.content.cloneNode(true); // Clonar el template
-    const characterId = characterJsonFormat?.id || "Error";
-
-    // Asignar datos a la tarjeta
-    clone.querySelector(".circle-inside").textContent = characterId;
-
-    if (characterJsonFormat) {
-        const characterName = characterJsonFormat.name;
-        const characterMeasurements = `Altura: ${characterJsonFormat.height}cm Peso: ${
-            characterJsonFormat.mass.replace(",", ".")
-        }kg`;
-
-        clone.querySelector("h3").textContent = characterName;
-        clone.querySelector("p").textContent = characterMeasurements;
-    } else {
-        // Si hay un error, mostrar información de error en la tarjeta
-        clone.querySelector("h3").textContent = "Error";
-        clone.querySelector("p").textContent =
-            "Ver la consola para averiguar el error.";
-        clone.children[0].classList.add("error");
-    }
-
-    return clone;
-};
-
-/* --- Asignar eventos cuando el DOM esté listo --- */
-ready(() => {
-    document
-        .querySelectorAll(".main-card")
-        .forEach((card) => card.addEventListener("mouseenter", show1Character));
-});
+// Inicializar la aplicación
+document.addEventListener("DOMContentLoaded", setupRangeListeners);

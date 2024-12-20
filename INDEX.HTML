@@ -1,88 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Personajes de Star Wars</title>
   <link href="https://fonts.cdnfonts.com/css/star-wars" rel="stylesheet">
   <link rel="stylesheet" href="src/css/styles.css">
-  <script src="assets/script/script.js" type="module"></script>
+
+
 </head>
 
 <body>
   <header>
-    <h1>Personajes de la Saga de Star Wars y sus Dimensiones</h1>
+    <h1>Personajes de Star Wars</h1>
   </header>
-  <main>
-    <!-- Personajes principales -->
-    <section id="first-group" class="character-row">
-      <aside class="indexes">1 - 5</aside>
-      <div class="cards-group">
-        <article class="card primary-character-card">
-          <div class="highlight-circle"></div>
-          <div class="card-content">
-            <h2>En esta sección...</h2>
-            <p>Encontrarás información sobre los personajes más populares.</p>
-          </div>
-        </article>
-      </div>
-      <!-- Contenedor dinámico-->
-    </section>
 
-    <!-- Personajes secundarios -->
-    <section id="second-group" class="character-row">
-      <aside class="indexes">6 - 10</aside>
-      <div class="cards-group">
-        <article class="card primary-character-card">
-          <div class="highlight-circle"></div>
-          <div class="card-content">
-            <h2>En esta sección...</h2>
-            <p>Encontrarás información sobre personajes secundarios importantes.</p>
-          </div>
-        </article>
+  <main>
+    <!--Rangos -->
+    <aside class="ranges">
+      <div class="range" data-range="1-5">
+        <span class="dot" style="background-color: #ffd700;"></span>
+        <div class="text">
+          <p>1 - 5</p>          
+        </div>
       </div>
+      <div class="range" data-range="6-10">
+        <span class="dot" style="background-color: #ffd700;"></span>
+        <div class="text">
+          <p>6 - 10</p>        
+        </div>
+      </div>
+      <div class="range" data-range="11-15">
+        <span class="dot" style="background-color: #ffd700;"></span>
+        <div class="text">
+          <p>11 - 15</p>         
+        </div>
+      </div>
+      <div class="range" data-range="16-20">
+        <span class="dot" style="background-color: #ffd700;"></span>
+        <div class="text">
+          <p>16 - 20</p>         
+        </div>
+      </div>
+    </aside>
+  
+    <!--Tarjetas -->
+    <section class="characters">
+      
+      <div class="card" data-range="1-5">
+        <span class="dot" style="background-color: #ff6b6b;"></span>
+        <div class="text">
+          <h3>En esta sección...</h3>
+          <p>Encontrarás información sobre los personajes más populares de las películas.</p>
+        </div>
+      </div>
+
+      <div class="card" data-range="6-10">
+        <span class="dot" style="background-color: #48c774;"></span>
+        <div class="text">
+          <h3>En esta sección...</h3>
+          <p>Encontrarás información sobre personajes secundarios importantes.</p>
+        </div>
+      </div>
+
+      <div class="card" data-range="11-15">
+        <span class="dot" style="background-color: #4d9efc;"></span>
+        <div class="text">
+          <h3>En esta sección...</h3>
+          <p>Encontrarás otros personajes significativos.</p>
+        </div>
+      </div>
+
+      <div class="card" data-range="16-20">
+        <span class="dot" style="background-color: #6c757d;"></span>
+        <div class="text">
+          <h3>En esta sección...</h3>
+          <p>Encontrarás personajes menos conocidos.</p>
+        </div>
+      
     </section>
   </main>
-
-   <!-- Personajes significativos -->
-   <section id="third-group" class="character-row">
-    <aside class="indexes">11 - 15</aside>
-    <div class="cards-group">
-      <article class="card primary-character-card">
-        <div class="highlight-circle"></div>
-        <div class="card-content">
-          <h2>En esta sección...</h2>
-          <p>Encontrarás otros personajes significativos.</p>
-        </div>
-      </article>
-    </div>
-  </section>
-
-   <!-- Personajes significativos 2 -->
-   <section id="forth-group" class="character-row">
-    <aside class="indexes">16 - 20</aside>
-    <div class="cards-group">
-      <article class="card primary-character-card">
-        <div class="highlight-circle"></div>
-        <div class="card-content">
-          <h2>En esta sección...</h2>
-          <p>Encontrarás otros personajes significativos.</p>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <template id="characterCard">
-    <div class="card">
-      <div class="highlight-circle"></div>
-      <div class="card-content">
-        <h3>Nombre del Personaje</h3>
-        <p>Detalles adicionales</p>
-      </div>
-    </div>
-  </template>
-  
+  <script src="src/JS/script.JS" type="module"></script>
 </body>
-
 </html>

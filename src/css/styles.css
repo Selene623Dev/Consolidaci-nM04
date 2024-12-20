@@ -1,39 +1,16 @@
-/* estilos generales */
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Variables generales */
-:root {
-  --widthSideBar: 100px;
-  --thickLine: 3px;
-  --padding-right: 20px;
-  --sizePoint: 15px;
-}
-
-@media screen and (width < 768px) {
-  :root {
-    --widthSideBar: 60px;
-    --padding-right: 15px;
-  }
-}
-
-/* Body */
+/* Estilos generales */
 body {
-  height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, sans-serif;
   margin: 0;
-  background-color: rgb(22, 22, 22);
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
-/* Header */
+/* Estilo del contenedor principal */
 header {
-  background-color: rgb(22, 22, 22);
-}
-
-/* Typografía */
-h1, h2, h3 {
-  margin: 0;
+  background-color: #000;
+  position: center;
 }
 
 h1 {
@@ -45,160 +22,177 @@ h1 {
   line-height: calc(50px);
 }
 
-p {
-  margin: 0.5em 0 0 0;
-}
-
-/* Row Styling */
-.row {
-  position: relative;
+main {
   display: flex;
-  align-items: center;
-  border-top: 1px solid #5e5e5e;
+  flex-direction: row; /* Alinea rangos y tarjetas en una fila */
+  gap: 20px; /* Espacio entre columnas */
+  padding: 20px;
+  align-items: flex-start;
 }
 
-/* Indexes Column */
-.indexes {
-  font-size: large;
-  font-weight: bold;
-  padding-right: var(--padding-right);
-  width: var(--widthSideBar);
-  text-align: end;
+/* Ajuste del contenedor de rangos */
+.ranges {
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
   position: relative;
 }
 
-@media screen and (width < 768px) {
-  .indexes {
-    font-size: small;
-  }
-}
-
-.indexes::before, 
-.indexes::after {
+.ranges::before {
   content: "";
   position: absolute;
-}
-
-.indexes::before { 
-  background-color: #5e5e5e;
-  width: var(--thickLine);
-  height: 100%;
+  left: 15px;
   top: 0;
-  left: var(--widthSideBar);
+  bottom: 0;
+  width: 2px;
+  background-color: #ddd;
 }
 
-.indexes::after { 
-  background-color: #fffc57;
-  border: 3px solid #5e5e5e;
-  width: var(--sizePoint);
-  height: var(--sizePoint);
+.range .dot {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  transform: translate(
-    calc(var(--padding-right) - (var(--thickLine) + var(--sizePoint)) / 2), 
-    0
-  );
+  background-color: #ffd700;
 }
 
-/* Cards Group */
-.cards-group {
+/* Ajuste del contenedor de tarjetas */
+.characters {
   display: flex;
-  flex-wrap: wrap;
-  width: calc(100% - var(--widthSideBar));
-  padding: 1em;
+  flex-direction: column;
+  gap: 40px;
 }
 
-/* Tarjetas */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-left: -50px;
+}
+
+/* Estilo de las tarjetas */
 .card {
-  background-color: ivory;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e3e3e3;
   display: flex;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-  padding: 1em;
-  margin: 0 0 1em 2em;
-  border-radius: 0.4em;
-  width: calc((100% - 6em) / 3);
-}
-
-@media screen and (width < 992px) {
-  .card {
-    width: calc((100% - 2em) / 2);
-  }
-}
-
-@media screen and (width < 576px) {
-  .card {
-    width: 100%;
-  }
-}
-
-/* Elementos dentro de las tarjetas */
-.card .circle-inside {
-  font-size: 1.1rem;
-  font-weight: bold;
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-  display: inline-flex;
-  justify-content: center;
   align-items: center;
-  flex: 0 0 auto;
-  letter-spacing: -1px;
+  gap: 15px;
+  transition: transform 0.3s ease;
 }
 
-.card .card-content {
-  margin-left: 1em;
+.card:hover {
+  transform: translateY(-3px);
 }
 
-/* Estilo principal de tarjeta */
-.main-card .circle-inside {
-  width: 40px;
-  height: 40px;
-  border: 5px groove #5e5e5e;
+.card .dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-/* Section-Specific Styles */
-#first-group {
-  background-color: #ffb6ae;
+.card .text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-#first-group .circle-inside {
-  background-color: #fa8072;
+.card h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
 }
 
-#second-group {
-  background-color: #c1ffc1;
+.card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
 }
 
-#second-group .circle-inside {
-  background-color: #90ee90;
+/* Contenedor de rangos */
+.ranges {
+  flex: 0 0 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  padding: 0 20px;
 }
 
-#third-group {
-  background-color: #a0d9ff;
+.range {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  margin-bottom: 40px; 
 }
 
-#third-group .circle-inside {
-  background-color: #87cefa;
+.range .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ffd700; 
 }
 
-#fourth-group {
-  border-bottom: 1px solid #5e5e5e;
-  background-color: #d6d6d6;
+.range[data-range="1-5"] .dot {
+  background-color: #ff6b6b; 
 }
 
-#fourth-group .circle-inside {
-  background-color: #e6e6e6;
+.range[data-range="6-10"] .dot {
+  background-color: #48c774; 
 }
 
-/* State-Based Styles */
-.loading {
-  background-color: #5e5e5e !important;
+.range[data-range="11-15"] .dot {
+  background-color: #4d9efc; 
 }
 
-.error {
-  background-color: #c20000 !important;
-  color: white;
+.range[data-range="16-20"] .dot {
+  background-color: #6c757d; 
 }
 
-.error .circle-inside {
-  background-color: #660101 !important;
+.range .text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.range p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.range small {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Línea vertical */
+.ranges::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #ddd;
+}
+
+/* Espaciado y alineación adicional */
+.ranges, .characters {
+  margin-top: 20px;
+}
+
+/* Cambia el cursor al pasar por un rango */
+.range {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  margin-bottom: 40px;
+  cursor: pointer;
 }
